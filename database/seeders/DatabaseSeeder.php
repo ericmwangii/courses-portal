@@ -15,14 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $user = User::factory()->create();
-
-        for ($i = 0; $i < 5; $i++) {
-            $user->watched()->create([]);
-        }
-
-        for ($i = 0; $i < 3; $i++) {
-            $user->comments()->create([]);
-        }
+        $this->call([
+            UserSeeder::class,
+            AchievementSeeder::class,
+            LessonWatchedSeeder::class,
+            CommentWrittenSeeder::class,
+        ]);
     }
 }

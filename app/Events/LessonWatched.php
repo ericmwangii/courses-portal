@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Video;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,15 +18,17 @@ class LessonWatched
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
+    public $video;
 
 
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Video $video)
     {
         //
         $this->user = $user;
+        $this->video = $video;
     }
 
     /**

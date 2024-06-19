@@ -14,7 +14,6 @@ class CommentWrittenListener
     use InteractsWithQueue;
 
 
-
     /**
      * Create the event listener.
      */
@@ -26,6 +25,7 @@ class CommentWrittenListener
     /**
      * Handle the event.
      */
+
     public function handle(CommentWritten $event)
     {
         $user = $event->user;
@@ -36,16 +36,10 @@ class CommentWrittenListener
 
     private function checkCommentAchievements($user, $commentsWritten)
     {
-        $achievements = [
-            1 => 'First Comment Written',
-            3 => '3 Comments Written',
-            5 => '5 Comments Written',
-            10 => '10 Comments Written',
-            20 => '20 Comments Written',
-        ];
+        $achievements = Achievement::where('type', 'comment')->get();
 
-        foreach ($achievements as $threshold => $achievement) {
-            if ($commentsWritten >= $threshold && !$user->achievements->contains('name', $achievement)) {
+        foreach ($achievements as $achievement) {
+            if ($commentsWritten >= $achievement->threshold && !$user->achievements->contains($achievement)) {
                 $this->unlockAchievement($user, $achievement);
             }
         }
@@ -53,9 +47,8 @@ class CommentWrittenListener
 
     private function unlockAchievement($user, $achievement)
     {
-        $achievementModel = Achievement::where('name', $achievement)->first();
-        $user->achievements()->attach($achievementModel);
-        AchievementUnlocked::dispatch($achievement, $user);
+        $user->achievements()->attach($achievement);
+        AchievementUnlocked::dispatch($achievement->name, $user);
 
         $this->checkForBadgeUpgrade($user);
     }
@@ -77,3 +70,7 @@ class CommentWrittenListener
         }
     }
 }
+
+
+
+

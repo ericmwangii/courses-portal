@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('badges', function (Blueprint $table) {
+        //
+        Schema::create('lessons_watched', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('threshold');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('video_id')->constrained()->onDelete('cascade');
             $table->boolean('is_deleted')->default(0);
             $table->softDeletes();
             $table->timestamps();
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('badges');
+        //
     }
 };

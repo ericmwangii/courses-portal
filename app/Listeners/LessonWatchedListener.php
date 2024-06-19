@@ -29,23 +29,17 @@ class LessonWatchedListener
     public function handle(LessonWatched $event)
     {
         $user = $event->user;
-        $lessonsWatched = $user->watched()->count();
+        $lessonsWatched = $user->watchedVideos()->count();
 
         $this->checkLessonAchievements($user, $lessonsWatched);
     }
 
     private function checkLessonAchievements($user, $lessonsWatched)
     {
-        $achievements = [
-            1 => 'First Lesson Watched',
-            5 => '5 Lessons Watched',
-            10 => '10 Lessons Watched',
-            25 => '25 Lessons Watched',
-            50 => '50 Lessons Watched',
-        ];
+        $achievements = Achievement::where('type', 'lesson')->get();
 
-        foreach ($achievements as $threshold => $achievement) {
-            if ($lessonsWatched >= $threshold && !$user->achievements->contains('name', $achievement)) {
+        foreach ($achievements as $achievement) {
+            if ($lessonsWatched >= $achievement->threshold && !$user->achievements->contains($achievement)) {
                 $this->unlockAchievement($user, $achievement);
             }
         }
@@ -53,9 +47,8 @@ class LessonWatchedListener
 
     private function unlockAchievement($user, $achievement)
     {
-        $achievementModel = Achievement::where('name', $achievement)->first();
-        $user->achievements()->attach($achievementModel);
-        AchievementUnlocked::dispatch($achievement, $user);
+        $user->achievements()->attach($achievement);
+        AchievementUnlocked::dispatch($achievement->name, $user);
 
         $this->checkForBadgeUpgrade($user);
     }
@@ -76,5 +69,12 @@ class LessonWatchedListener
             }
         }
     }
+
+
+
+
+
+
+
 
 }
