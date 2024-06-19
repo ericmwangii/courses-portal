@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->boolean('is_deleted')->default(0);
             $table->integer('threshold');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

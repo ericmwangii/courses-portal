@@ -6,13 +6,12 @@ use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
 use App\Events\CommentWritten;
 use App\Models\Achievement;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Badge;
 use Illuminate\Queue\InteractsWithQueue;
 
 class CommentWrittenListener
 {
     use InteractsWithQueue;
-
 
     /**
      * Create the event listener.
@@ -25,7 +24,6 @@ class CommentWrittenListener
     /**
      * Handle the event.
      */
-
     public function handle(CommentWritten $event)
     {
         $user = $event->user;
@@ -36,7 +34,7 @@ class CommentWrittenListener
 
     private function checkCommentAchievements($user, $commentsWritten)
     {
-        $achievements = Achievement::where('type', 'comment')->get();
+        $achievements = Achievement::where('type', 'comment')->orderBy('threshold')->get();
 
         foreach ($achievements as $achievement) {
             if ($commentsWritten >= $achievement->threshold && !$user->achievements->contains($achievement)) {
@@ -65,12 +63,9 @@ class CommentWrittenListener
 
         foreach ($badges as $threshold => $badge) {
             if ($achievementsCount >= $threshold && !$user->badges->contains('name', $badge)) {
+                $user->badges()->attach(Badge::where('name', $badge)->first());
                 BadgeUnlocked::dispatch($badge, $user);
             }
         }
     }
 }
-
-
-
-

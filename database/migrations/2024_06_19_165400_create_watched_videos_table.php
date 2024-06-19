@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('comments_written', function (Blueprint $table) {
+        Schema::create('watched_videos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->boolean('is_deleted')->default(0);
             $table->softDeletes();
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('watched_videos');
     }
 };
