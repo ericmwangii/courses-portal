@@ -1,8 +1,9 @@
 <?php
 
+
 namespace App\Events;
 
-use App\Models\Video;
+use App\Models\WatchedVideo;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,23 +13,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-
 class LessonWatched
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
-    public $video;
-
+    public $watched;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user, Video $video)
+    public function __construct(User $user, WatchedVideo $watched)
     {
-        //
         $this->user = $user;
-        $this->video = $video;
+        $this->watched = $watched;
     }
 
     /**

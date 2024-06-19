@@ -31,7 +31,9 @@ class User extends Authenticatable
 
     public function badges()
     {
-        return $this->belongsToMany(Badge::class, 'user_badge')->withTimestamps();
+        return $this->belongsToMany(Badge::class, 'user_badge')
+            ->using(UserBadge::class)
+            ->withTimestamps();
     }
 
     public function comments()
@@ -39,7 +41,7 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function watchedVideos()
+    public function watched()
     {
         return $this->hasMany(WatchedVideo::class);
     }

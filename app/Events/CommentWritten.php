@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Course;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -16,18 +16,16 @@ class CommentWritten
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
     public $user;
-    public $course;
+    public $comment;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user, Course $course)
+    public function __construct(User $user, Comment $comment)
     {
-        //
         $this->user = $user;
-        $this->course = $course;
+        $this->comment = $comment;
     }
 
     /**

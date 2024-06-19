@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use App\Events\CommentWritten;
-use App\Events\LessonWatched;
 use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
-use App\Listeners\CommentWrittenListener;
-use App\Listeners\LessonWatchedListener;
+use App\Events\CommentWritten;
+use App\Events\LessonWatched;
 use App\Listeners\AchievementUnlockedListener;
 use App\Listeners\BadgeUnlockedListener;
+use App\Listeners\CommentWrittenListener;
+use App\Listeners\LessonWatchedListener;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -28,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         AchievementUnlocked::class => [
             AchievementUnlockedListener::class,
+        ],
+        BadgeUnlocked::class => [
+            BadgeUnlockedListener::class,
         ],
 
     ];

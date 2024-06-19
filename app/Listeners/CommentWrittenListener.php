@@ -7,23 +7,9 @@ use App\Events\BadgeUnlocked;
 use App\Events\CommentWritten;
 use App\Models\Achievement;
 use App\Models\Badge;
-use Illuminate\Queue\InteractsWithQueue;
 
 class CommentWrittenListener
 {
-    use InteractsWithQueue;
-
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(CommentWritten $event)
     {
         $user = $event->user;
@@ -34,7 +20,7 @@ class CommentWrittenListener
 
     private function checkCommentAchievements($user, $commentsWritten)
     {
-        $achievements = Achievement::where('type', 'comment')->orderBy('threshold')->get();
+        $achievements = Achievement::where('type', 'comment')->get();
 
         foreach ($achievements as $achievement) {
             if ($commentsWritten >= $achievement->threshold && !$user->achievements->contains($achievement)) {
@@ -54,17 +40,12 @@ class CommentWrittenListener
     private function checkForBadgeUpgrade($user)
     {
         $achievementsCount = $user->achievements()->count();
+        $badges = Badge::orderBy('threshold')->get();
 
-        $badges = [
-            4 => 'Intermediate',
-            8 => 'Advanced',
-            10 => 'Master',
-        ];
-
-        foreach ($badges as $threshold => $badge) {
-            if ($achievementsCount >= $threshold && !$user->badges->contains('name', $badge)) {
-                $user->badges()->attach(Badge::where('name', $badge)->first());
-                BadgeUnlocked::dispatch($badge, $user);
+        foreach ($badges as $badge) {
+            if ($achievementsCount >= $badge->threshold && !$user->badges->contains('name', $badge->name)) {
+                $user->badges()->attach($badge);
+                BadgeUnlocked::dispatch($badge->name, $user);
             }
         }
     }

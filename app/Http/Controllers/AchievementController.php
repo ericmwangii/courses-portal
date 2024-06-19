@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Achievement;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AchievementController extends Controller
 {
@@ -53,7 +52,7 @@ class AchievementController extends Controller
 
             foreach ($achievements as $achievement) {
                 if (!$user->achievements->contains($achievement)) {
-                    if ($achievement->type === 'lesson' && $user->watchedVideos()->count() < $achievement->threshold) {
+                    if ($achievement->type === 'lesson' && $user->watched()->count() < $achievement->threshold) {
                         $next_available[] = $achievement->name;
                     } elseif ($achievement->type === 'comment' && $user->comments()->count() < $achievement->threshold) {
                         $next_available[] = $achievement->name;

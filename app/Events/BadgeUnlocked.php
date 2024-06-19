@@ -2,42 +2,30 @@
 
 namespace App\Events;
 
-use App\Models\User;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\User;
 
 class BadgeUnlocked
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
-
+    public $badge_id;
     public $badge_name;
     public $user;
 
     /**
      * Create a new event instance.
+     *
+     * @param int $badge_id
+     * @param string $badge_name
+     * @param User $user
+     * @return void
      */
-    public function __construct($badge_name, User $user)
+    public function __construct($badge_id, $badge_name, User $user)
     {
-        //
+        $this->badge_id = $badge_id;
         $this->badge_name = $badge_name;
         $this->user = $user;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
     }
 }

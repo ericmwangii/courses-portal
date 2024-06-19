@@ -10,7 +10,7 @@ class WatchedVideo extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'course_id'];
+    protected $fillable = ['user_id', 'course_id', 'created_at', 'updated_at'];
 
     public function user()
     {
