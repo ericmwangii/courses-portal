@@ -21,4 +21,10 @@ class Course extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function watched()
+    {
+        return $this->hasMany(WatchedVideo::class);
+    }
+
 }

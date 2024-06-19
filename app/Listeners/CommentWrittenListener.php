@@ -45,7 +45,7 @@ class CommentWrittenListener
         foreach ($badges as $badge) {
             if ($achievementsCount >= $badge->threshold && !$user->badges->contains('name', $badge->name)) {
                 $user->badges()->attach($badge);
-                BadgeUnlocked::dispatch($badge->name, $user);
+                BadgeUnlocked::dispatch($badge->id, $badge->name, $user);
             }
         }
     }

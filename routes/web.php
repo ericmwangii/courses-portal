@@ -9,5 +9,5 @@ Route::get('/', function () {
 });
 
 Route::get('users/{user}/achievements', [AchievementController::class, 'show']);
-Route::get('/test-comment-event', [EventTestController::class, 'testCommentEvent']);
-Route::get('/test-lesson-event', [EventTestController::class, 'testLessonEvent']);
+Route::post('/test-comment-event', [EventTestController::class, 'testCommentEvent'])->name('test-comment-event');
+Route::post('/test-lesson-event', [EventTestController::class, 'testLessonEvent'])->name('test-lesson-event');

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Events\CommentWritten;
 use App\Events\LessonWatched;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class EventTestController extends Controller
 {
-    public function testCommentEvent()
+    public function testCommentEvent(Request $request)
     {
         try {
             $user = User::find(1);
@@ -18,8 +19,8 @@ class EventTestController extends Controller
             }
 
             $comment = $user->comments()->create([
-                'course_id' => 1,
-                'content' => 'This is a test comment.',
+                'course_id' => $request->input('course_id'),
+                'content' => $request->input('content'),
                 'created_at' => now(),
             ]);
 
@@ -32,7 +33,7 @@ class EventTestController extends Controller
         }
     }
 
-    public function testLessonEvent()
+    public function testLessonEvent(Request $request)
     {
         try {
             $user = User::find(1);
@@ -41,8 +42,8 @@ class EventTestController extends Controller
             }
 
             $watchedVideo = $user->watched()->create([
-                'course_id' => 1,
-                'video_id' => 1,
+                'course_id' => $request->input('course_id'),
+                'video_id' => $request->input('video_id'),
                 'created_at' => now(),
             ]);
 

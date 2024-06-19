@@ -109,7 +109,7 @@ class AchievementUnlocked
 
         foreach ($badges as $threshold => $badge) {
             if ($achievementsCount >= $threshold && !$user->badges->contains('name', $badge)) {
-                BadgeUnlocked::dispatch($badge, $user);
+                BadgeUnlocked::dispatch($badge->id, $badge->name, $user);
             }
         }
     }

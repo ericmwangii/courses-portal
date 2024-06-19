@@ -2,12 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
 use App\Events\LessonWatched;
-use App\Events\AchievementUnlocked;
 use App\Models\Achievement;
 use App\Models\Badge;
-use Illuminate\Support\Facades\Log;
 
 class LessonWatchedListener
 {
@@ -46,7 +45,7 @@ class LessonWatchedListener
         foreach ($badges as $badge) {
             if ($achievementsCount >= $badge->threshold && !$user->badges->contains('name', $badge->name)) {
                 $user->badges()->attach($badge);
-                BadgeUnlocked::dispatch($badge->name, $user);
+                BadgeUnlocked::dispatch($badge->id, $badge->name, $user);
             }
         }
     }
