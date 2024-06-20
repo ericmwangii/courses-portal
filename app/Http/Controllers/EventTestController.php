@@ -13,7 +13,7 @@ class EventTestController extends Controller
     public function testCommentEvent(Request $request)
     {
         try {
-            $user = User::find(1);
+            $user = User::where('id', $request->user_id)->first();
             if (!$user) {
                 return response()->json(['message' => 'User not found.'], 404);
             }
@@ -36,7 +36,7 @@ class EventTestController extends Controller
     public function testLessonEvent(Request $request)
     {
         try {
-            $user = User::find(1);
+            $user = User::where('id', $request->user_id)->first();
             if (!$user) {
                 return response()->json(['message' => 'User not found.'], 404);
             }
